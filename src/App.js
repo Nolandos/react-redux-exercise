@@ -1,18 +1,50 @@
 import React from 'react';
-import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { goodbye } from './actions';
+import { connect } from 'react-redux';
+import User from './components/User/User.jsx';
 
-function App(props) {
-  const hello = useSelector(state => state.helloReducer);
-  const dispatch = useDispatch();
-  
-  return (
-    <div className="App">
-      <h1>{hello}</h1>
-      <button onClick={() => dispatch(goodbye('Siemanko'))}>Zmień</button>
-    </div>
-  );
+function search(users) {
+  return {
+      type: 'SEARCH_USERS',
+      users
+  }
 }
 
-export default App;
+class App extends React.Component {
+
+  getUsers = () => {
+    const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
+    const url = `https://api.github.com/search/users?q=${searchText}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(responseJson => this.props.searchUsers(responseJson.items));
+  }
+
+render() {
+  const { users } = this.props;
+    return (
+      <div>
+        <button onClick={this.getUsers} >Pokaż użytkowników</button>
+        <ul>{users.map(user => <User key={user.login} {...user} />)}</ul>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return { 
+        users: state.users
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    searchUsers: (users) => dispatch(search(users))
+  }
+};
+
+export default App = connect(mapStateToProps, mapDispatchToProps)(App);
+
+
+
+
+

@@ -1,4 +1,9 @@
 import { createStore } from 'redux';
 import allReducers from './reducers';
 
-export const store = createStore(allReducers);
+const initialStore = {
+    users: [],
+    searchText: ''
+}
+
+export const store = createStore(allReducers, { counter: 0 });
