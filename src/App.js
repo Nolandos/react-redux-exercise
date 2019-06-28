@@ -9,8 +9,18 @@ function search(users) {
   }
 }
 
-class App extends React.Component {
+function getUsers () {
+  return dispatch => {
+    const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
+    const url = `https://api.github.com/search/users?q=${searchText}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(responseJson => dispatch(search(responseJson.items)));
+  }
+}
 
+class App extends React.Component {
+  /*
   getUsers = () => {
     const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
     const url = `https://api.github.com/search/users?q=${searchText}`;
@@ -18,12 +28,13 @@ class App extends React.Component {
       .then(response => response.json())
       .then(responseJson => this.props.searchUsers(responseJson.items));
   }
+*/
 
 render() {
-  const { users } = this.props;
+  const { users, searchUsers } = this.props;
     return (
       <div>
-        <button onClick={this.getUsers} >Pokaż użytkowników</button>
+        <button onClick={searchUsers} >Pokaż użytkowników</button>
         <ul>{users.map(user => <User key={user.login} {...user} />)}</ul>
       </div>
     );
@@ -38,7 +49,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    searchUsers: (users) => dispatch(search(users))
+    searchUsers: () => dispatch(getUsers())
   }
 };
 
