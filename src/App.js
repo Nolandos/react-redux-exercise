@@ -9,32 +9,50 @@ function search(users) {
   }
 }
 
-function getUsers () {
-  return dispatch => {
-    const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
-    const url = `https://api.github.com/search/users?q=${searchText}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(responseJson => dispatch(search(responseJson.items)));
+function getDataRequested() {
+  return {
+    type: 'GET_DATA_REQUESTED'
   }
 }
 
-class App extends React.Component {
-  /*
-  getUsers = () => {
+function getDataDone() {
+  return {
+    type: 'GET_DATA_DONE'
+  }
+}
+
+
+
+function getUsers () {
+  return async dispatch => {
     const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
     const url = `https://api.github.com/search/users?q=${searchText}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(responseJson => this.props.searchUsers(responseJson.items));
-  }
-*/
+
+    dispatch(getDataRequested());
+    
+    try {
+      await new Promise((resolve, reject) => setTimeout(resolve, 4000));
+      let response = await fetch(url);
+      response = await response.json();
+      dispatch(getDataDone());
+      dispatch(search(response.items)); 
+    }
+    catch {
+      console.log('error')
+    }
+    
+  } 
+}
+
+class App extends React.Component {
 
 render() {
-  const { users, searchUsers } = this.props;
+  const { users, loading, searchUsers } = this.props;
     return (
       <div>
         <button onClick={searchUsers} >Pokaż użytkowników</button>
+        <br></br>
+        {loading === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img>}
         <ul>{users.map(user => <User key={user.login} {...user} />)}</ul>
       </div>
     );
@@ -43,7 +61,8 @@ render() {
 
 const mapStateToProps = (state) => {
   return { 
-        users: state.users
+        users: state.users,
+        loading: state.loading
     };
 };
 

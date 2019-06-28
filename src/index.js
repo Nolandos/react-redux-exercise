@@ -10,13 +10,18 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'SEARCH_USERS':
       return { ...state, users: action.users};
+    case 'GET_DATA_REQUESTED':
+      return {...state, loading: true, users:[]};
+    case 'GET_DATA_DONE':
+      return {...state, loading: false};
     default:
       return state;
     }
 };
 
 const initialState = {
-    users: []
+    users: [],
+    loading: false
 }
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
