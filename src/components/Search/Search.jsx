@@ -37,13 +37,7 @@ class Search extends React.Component {
         )
     }
 }
-/*
-const mapStateToProps = (state) => {
-    return {
-        searchText: getSearchText(state)
-      };
-  };
-*/
+
 const mapDispatchToProps = { showUsers };
 
 export default Search = connect(null, mapDispatchToProps)(Search);

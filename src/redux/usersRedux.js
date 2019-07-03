@@ -1,7 +1,6 @@
 //SELECTORS
 export const getUserList = ({ users }) => users.users;
 export const getRequest = ({users}) => users.request;
-export const getSearchText = ({users}) => users.searchText;
 
 //ACTIONS
 export const search = (users) => ({type: 'SEARCH_USERS', users});
