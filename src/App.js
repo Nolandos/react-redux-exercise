@@ -1,35 +1,37 @@
+//REQUIRED IMPORTS
 import React from 'react';
 import { connect } from 'react-redux';
-import User from './components/User/User.jsx';
 
-import { getUserList, getLoading, showUsers} from './redux/usersRedux';
+//IMPORT COMONENTS
+import User from './components/User/User.jsx';
+import Search from './components/Search/Search.jsx';
+
+//IMPORT REDUX ELEMENTS
+import { getUserList, getRequest } from './redux/usersRedux';
 
 class App extends React.Component {
 
-render() {
-  const { users, loading, showUsers } = this.props;
-
-    return (
-      <div>
-        <button onClick={showUsers} >Pokaż użytkowników</button>
-        <br></br>
-        {loading === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img>}
-        {<ul>{users.map(user => <User key={user.login} {...user} />)}</ul>}
-      </div>
-    );
+  render() {
+    const { users, request } = this.props;
+      return (
+        <div>
+          <Search />
+          <br></br>
+          {request.pending === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img>}
+          {<ul>{users.map(user => <User key={user.login} {...user} />)}</ul>}
+        </div>
+      );
+    }
   }
-}
 
 const mapStateToProps = (state) => {
   return {
-      users: getUserList(state), //state.getUsers.users, w sumie też tak można... :D
-      loading: getLoading(state),
+      users: getUserList(state), 
+      request: getRequest(state),
     };
 };
 
-const mapDispatchToProps = { showUsers };
-
-export default App = connect(mapStateToProps, mapDispatchToProps)(App);
+export default App = connect(mapStateToProps)(App);
 
 
 
