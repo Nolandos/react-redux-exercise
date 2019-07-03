@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import User from './components/User/User.jsx';
-import { showUsers } from "./actions";
-import {getUserList, getLoading} from "./selectors/selectors";
+
+import { getUserList, getLoading, showUsers} from './redux/usersRedux';
 
 class App extends React.Component {
 

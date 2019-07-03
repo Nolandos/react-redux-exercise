@@ -1,10 +1,13 @@
+//SELECTORS
+export const getUserList = ({ users }) => users.users;
+export const getLoading = ({users}) => users.loading;
+
+//ACTIONS
 export const search = (users) => ({type: 'SEARCH_USERS', users})
 export const getDataRequested = () => ({type: 'GET_DATA_REQUESTED'});  
 export const getDataDone = () => ({type: 'GET_DATA_DONE'});
-   
 
-/*THUNKS*/
-
+//THUNKS
 export const showUsers = () => {
     return async dispatch => {
       const searchText = 'Nolandos'; // tak na sztywno sobie można podać :)
@@ -24,4 +27,24 @@ export const showUsers = () => {
       }
       
     } 
-  }
+}
+
+//INITIAL STATE
+const initialState = {
+    users: [],
+    loading: false
+}
+
+//REDUCER
+export default function users(state = initialState, action={}) {
+    switch (action.type) {
+      case 'SEARCH_USERS':
+        return { ...state, users: action.users};
+      case 'GET_DATA_REQUESTED':
+        return {...state, loading: true, users:[]};
+      case 'GET_DATA_DONE':
+        return {...state, loading: false};
+      default:
+        return state;
+    }
+};
