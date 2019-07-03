@@ -3,19 +3,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 //IMPORT REDUX ELEMENTS
-import { showUsers, getSearchText, setSearchText } from '../../redux/usersRedux';
+import { showUsers } from '../../redux/usersRedux';
 
 class Search extends React.Component { 
+
+    state = {
+        searchText: ''
+    }
     
     handleChange = e => {
-        const {setSearchText} = this.props;
         let searchingText = e.target.value;
-        setSearchText(searchingText);
+        this.setState({searchText: searchingText});
     }
 
     handleSubmit = e => {  
         e.preventDefault();
-        const {searchText, showUsers } = this.props;
+        const { searchText } = this.state;
+        const { showUsers } = this.props;
         showUsers(searchText);
     }
 
@@ -33,14 +37,14 @@ class Search extends React.Component {
         )
     }
 }
-
+/*
 const mapStateToProps = (state) => {
     return {
         searchText: getSearchText(state)
       };
   };
+*/
+const mapDispatchToProps = { showUsers };
 
-const mapDispatchToProps = { showUsers, setSearchText };
-
-export default Search = connect(mapStateToProps, mapDispatchToProps)(Search);
+export default Search = connect(null, mapDispatchToProps)(Search);
 

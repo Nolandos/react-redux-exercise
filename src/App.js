@@ -13,11 +13,13 @@ class App extends React.Component {
 
   render() {
     const { users, request } = this.props;
+
       return (
         <div>
           <Search />
           <br></br>
           {request.pending === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img>}
+          {request.success === false && <h1>{request.error}</h1>}
           {<ul>{users.map(user => <User key={user.login} {...user} />)}</ul>}
         </div>
       );

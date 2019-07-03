@@ -8,7 +8,6 @@ export const search = (users) => ({type: 'SEARCH_USERS', users});
 export const getDataRequested = () => ({type: 'GET_DATA_REQUESTED'});  
 export const getDataDone = () => ({type: 'GET_DATA_DONE'});
 export const errorRequest = (err) => ({type: 'ERROR_REQUEST', err});
-export const setSearchText = (text) => ({type: 'SEARCH_TEXT', text});
 
 //THUNKS
 export const showUsers = (searchText) => {
@@ -21,10 +20,11 @@ export const showUsers = (searchText) => {
         let response = await fetch(url);
         response = await response.json();
         dispatch(getDataDone());
+        console.log(response);
         dispatch(search(response.items)); 
       }
       catch (err) {
-        errorRequest(err);
+        dispatch(errorRequest(err.message));
       }
     } 
 }
@@ -50,9 +50,7 @@ export default function users(state = initialState, action={}) {
         case 'GET_DATA_DONE':
             return {...state, request: { pending: false, success: null, error: null}};
         case 'ERROR_REQUEST':
-            return {...state, request: { pending: false, success: null, error: action.err}};
-        case 'SEARCH_TEXT':
-            return {...state, searchText: action.text};
+            return {...state, request: { pending: false, success: false, error: action.err}};
         default:
             return state;
     }
