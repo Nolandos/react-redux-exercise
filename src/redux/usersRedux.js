@@ -17,10 +17,13 @@ export const showUsers = (searchText) => {
       try {
         await new Promise((resolve, reject) => setTimeout(resolve, 4000));
         let response = await fetch(url);
-        response = await response.json();
-        dispatch(getDataDone());
-        console.log(response);
-        dispatch(search(response.items)); 
+        if(response.ok === false) {    //Tutaj dodałem if'a, bo np błąd sieci catch wyłapywał ale już "wpisanie niczego", niby błąd z api przyszedł ale nie łapał
+            dispatch(errorRequest(response.status));
+        } else {
+            response = await response.json();
+            dispatch(getDataDone());
+            dispatch(search(response.items));
+        } 
       }
       catch (err) {
         dispatch(errorRequest(err.message));
@@ -31,7 +34,6 @@ export const showUsers = (searchText) => {
 //INITIAL STATE
 const initialState = {
     users: [],
-    searchText: '',
     request: {
         pending: false,
         success: null,
@@ -45,11 +47,11 @@ export default function users(state = initialState, action={}) {
         case 'SEARCH_USERS':
             return { ...state, users: action.users};
         case 'GET_DATA_REQUESTED':
-            return {...state, request: { pending: true, success: null, error: null} , users:[]};
+            return { ...state, request: { pending: true } , users:[] };
         case 'GET_DATA_DONE':
-            return {...state, request: { pending: false, success: null, error: null}};
+            return { ...state, request: { pending: false, success: true } };
         case 'ERROR_REQUEST':
-            return {...state, request: { pending: false, success: false, error: action.err}};
+            return { ...state, request: { pending: false, success: false, error: action.err } };
         default:
             return state;
     }

@@ -1,6 +1,7 @@
 //REQUIRED IMPORTS
 import React from 'react';
 import { connect } from 'react-redux';
+import './App.scss';
 
 //IMPORT COMONENTS
 import User from './components/User/User.jsx';
@@ -15,12 +16,12 @@ class App extends React.Component {
     const { users, request } = this.props;
 
       return (
-        <div>
+        <div className="app">
           <Search />
           <br></br>
-          {request.pending === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img>}
-          {request.success === false && <h1>{request.error}</h1>}
-          {<ul>{users.map(user => <User key={user.login} {...user} />)}</ul>}
+          { request.pending === true && <img src="http://jammer.hu/wp-content/uploads/2014/12/Preloader_10.gif"></img> }
+          { request.success === false && <h1>Rodzaj błędu: {request.error}</h1> }
+          { request.success === true && <ul className="contact-list">{users.map(user => <User key={user.login} {...user} />)}</ul> }
         </div>
       );
     }

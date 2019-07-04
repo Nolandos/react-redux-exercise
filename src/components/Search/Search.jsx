@@ -1,6 +1,7 @@
 //REQUIRED IMPORTS
 import React from 'react';
 import { connect } from 'react-redux';
+import './Search.scss';
 
 //IMPORT REDUX ELEMENTS
 import { showUsers } from '../../redux/usersRedux';
