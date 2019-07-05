@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import './App.scss';
 
 //IMPORT COMONENTS
-import User from './components/User/User.jsx';
-import Search from './components/Search/Search.jsx';
+import User from './components/User/User';
+import Search from './components/Search/Search';
 
 //IMPORT REDUX ELEMENTS
 import { getUserList, getRequest } from './redux/usersRedux';
